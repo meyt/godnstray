@@ -37,6 +37,11 @@ dns1 = "185.55.226.26"
 dns2 = "185.55.225.25"
 
 [[dns_servers]]
+name = "Electrotm.org"
+dns1 = "78.157.42.100"
+dns2 = "78.157.42.101"
+
+[[dns_servers]]
 name = "Radar.game"
 dns1 = "10.202.10.10"
 dns2 = "10.202.10.11"
