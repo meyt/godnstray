@@ -2,7 +2,7 @@
 
 Set Windows DNS from Tray icon.
 
-![screenshot](https://github.com/meyt/godnstray/assets/10482278/841cfdfd-e6ea-411e-acc4-39015166407e)
+![godnstray-screenshot](https://github.com/meyt/godnstray/assets/10482278/8d96d533-2eeb-4bf6-8ae6-8ad06b283ae9)
 
 ## Usage
 
