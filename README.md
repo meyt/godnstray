@@ -29,5 +29,5 @@ You can change DNS servers list by editing that file and restart the app.
 
 ## Credits
 
-- Inspired from https://github.com/LordArma/DNS-on-Tray
+- Inspired by https://github.com/LordArma/DNS-on-Tray
 - https://github.com/getlantern/systray
