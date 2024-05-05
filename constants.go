@@ -1,6 +1,8 @@
 package main
 
-var defaultConfig = `
+var APP_WEBSITE = "https://github.com/meyt/godnstray"
+var CONFIG_FILENAME = "config.toml"
+var CONFIG = `
 [[dns_servers]]
 name = "Google"
 dns1 = "8.8.8.8"
