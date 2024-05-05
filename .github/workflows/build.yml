@@ -26,38 +26,21 @@ jobs:
           go install github.com/tc-hib/go-winres@latest
 
       - name: Build for Linux
-        run: go build -o dist/linux-amd64/${{ env.APP_NAME }}
+        run: go build -o dist/${{ env.APP_NAME }}-linux-amd64
 
       - name: Build for Windows
         run: |
           go-winres simply --icon icon/icon.png
-          go build -ldflags "-H=windowsgui" -o dist/windows-amd64/${{ env.APP_NAME }}.exe
-          GOARCH=arm go build -ldflags "-H=windowsgui" -o dist/windows-arm/${{ env.APP_NAME }}.exe
-          GOARCH=arm64 go build -ldflags "-H=windowsgui" -o dist/windows-arm64/${{ env.APP_NAME }}.exe
+          go build -ldflags "-H=windowsgui" -o dist/${{ env.APP_NAME }}.exe
+          GOARCH=arm go build -ldflags "-H=windowsgui" -o dist/${{ env.APP_NAME }}-arm.exe
+          GOARCH=arm64 go build -ldflags "-H=windowsgui" -o dist/${{ env.APP_NAME }}-arm64.exe
         env:
           GOOS: windows
           GOARCH: amd64
 
-      - name: Upload Linux Artifacts
-        uses: actions/upload-artifact@v4
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
         with:
-          name: ${{ env.APP_NAME }}-linux-amd64
-          path: ./dist/linux-amd64/${{ env.APP_NAME }}
-
-      - name: Upload Windows Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ env.APP_NAME }}-windows-amd64
-          path: ./dist/windows-amd64/${{ env.APP_NAME }}.exe
-
-      - name: Upload Windows arm Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ env.APP_NAME }}-windows-arm
-          path: ./dist/windows-arm/${{ env.APP_NAME }}.exe
-
-      - name: Upload Windows arm64 Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ env.APP_NAME }}-windows-arm64
-          path: ./dist/windows-arm64/${{ env.APP_NAME }}.exe
+          files: |
+            ./dist/
