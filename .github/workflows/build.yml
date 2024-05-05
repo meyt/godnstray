@@ -9,6 +9,9 @@ on:
 env:
   APP_NAME: godnstray
 
+permissions:
+  contents: write
+
 jobs:
   build:
     name: Build
