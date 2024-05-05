@@ -1,0 +1,63 @@
+name: Build
+on:
+  push:
+    branches:
+      - 'master'
+    tags:
+      - '*'
+
+env:
+  APP_NAME: godnstray
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+
+      - name: Install
+        run: |
+          sudo apt-get install -y gcc libgtk-3-dev libayatana-appindicator3-dev
+          go mod tidy
+          go install github.com/tc-hib/go-winres@latest
+
+      - name: Build for Linux
+        run: go build -o dist/linux-amd64/${{ env.APP_NAME }}
+
+      - name: Build for Windows
+        run: |
+          go-winres simply --icon icon/icon.png
+          go build -ldflags "-H=windowsgui" -o dist/windows-amd64/${{ env.APP_NAME }}.exe
+          GOARCH=arm go build -ldflags "-H=windowsgui" -o dist/windows-arm/${{ env.APP_NAME }}.exe
+          GOARCH=arm64 go build -ldflags "-H=windowsgui" -o dist/windows-arm64/${{ env.APP_NAME }}.exe
+        env:
+          GOOS: windows
+          GOARCH: amd64
+
+      - name: Upload Linux Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.APP_NAME }}-linux-amd64
+          path: ./dist/linux-amd64/${{ env.APP_NAME }}
+
+      - name: Upload Windows Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.APP_NAME }}-windows-amd64
+          path: ./dist/windows-amd64/${{ env.APP_NAME }}.exe
+
+      - name: Upload Windows arm Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.APP_NAME }}-windows-arm
+          path: ./dist/windows-arm/${{ env.APP_NAME }}.exe
+
+      - name: Upload Windows arm64 Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.APP_NAME }}-windows-arm64
+          path: ./dist/windows-arm64/${{ env.APP_NAME }}.exe
