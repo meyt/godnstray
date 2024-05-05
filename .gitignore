@@ -1,3 +1,4 @@
 *.exe
 *.toml
 *.sum
+*.syso
